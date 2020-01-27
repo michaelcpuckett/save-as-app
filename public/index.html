@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<link rel="manifest" href="/manifest.json">
+<meta name="viewport" content="width=device-width, initial-scale=1. viewport-fit=cover">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<body>
+<script>
+  if (window.location.href.includes('?url=')) {
+    const metaEl = window.document.createElement('meta')
+    metaEl.setAttribute('http-equiv', 'refresh')
+    metaEl.setAttribute('content', `0;url=${window.location.href.split('?url=')[1]}`)
+    window.document.head.append(metaEl)
+  } else {
+    const formEl = window.document.createElement('form')
+    const imageEl = window.document.createElement('img')
+    const imagePositionRadioCenter = window.document.createElement('input')
+    const imagePositionRadioTopLeft = window.document.createElement('input')
+    const imagePositionRadioTopRight = window.document.createElement('input')
+    const imagePositionRadioCenterLabel = window.document.createElement('label')
+    const imagePositionRadioTopLeftLabel = window.document.createElement('label')
+    const imagePositionRadioTopRightLabel = window.document.createElement('label')
+    imagePositionRadioCenterLabel.innerText = 'Center'
+    imagePositionRadioCenterLabel.append(imagePositionRadioCenter)
+    imagePositionRadioTopLeftLabel.innerText = 'Top Left'
+    imagePositionRadioTopLeftLabel.append(imagePositionRadioTopLeft)
+    imagePositionRadioTopRightLabel.innerText = 'Top Right'
+    imagePositionRadioTopRightLabel.append(imagePositionRadioTopRight)
+    imagePositionRadioCenter.setAttribute('checked', '')
+    imagePositionRadioCenter.setAttribute('type', 'radio')
+    imagePositionRadioCenter.setAttribute('name', 'position')
+    imagePositionRadioCenter.setAttribute('value', 'center')
+    imagePositionRadioTopLeft.setAttribute('type', 'radio')
+    imagePositionRadioTopLeft.setAttribute('name', 'position')
+    imagePositionRadioTopLeft.setAttribute('value', 'top-left')
+    imagePositionRadioTopRight.setAttribute('type', 'radio')
+    imagePositionRadioTopRight.setAttribute('name', 'position')
+    imagePositionRadioTopRight.setAttribute('value', 'top-right')
+    const fieldsetEl = window.document.createElement('fieldset')
+    const legendEl = window.document.createElement('legend')
+    legendEl.innerText = 'Icon Position'
+    fieldsetEl.append(legendEl)
+    fieldsetEl.append(imagePositionRadioCenterLabel)
+    fieldsetEl.append(imagePositionRadioTopLeftLabel)
+    fieldsetEl.append(imagePositionRadioTopRightLabel)
+    const colorInputEl = window.document.createElement('input')
+    colorInputEl.setAttribute('placeholder', 'Color')
+    colorInputEl.setAttribute('type', 'color')
+    // colorInputEl.setAttribute('value', '#4ADD3A')
+    const colorLabelEl = window.document.createElement('label')
+    colorLabelEl.innerText = 'Background Color'
+    colorLabelEl.append(colorInputEl)
+    const fileInputEl = window.document.createElement('input')
+    fileInputEl.setAttribute('type', 'file')
+    fileInputEl.addEventListener('change', (e) => {
+      const file = fileInputEl.files[0]
+      const reader = new FileReader()
+
+      reader.addEventListener('load', () => {
+        // convert image file to base64 string
+        imageEl.src = reader.result
+      })
+
+      if (file) {
+        reader.readAsDataURL(file)
+      }
+    })
+    const urlInputEl = window.document.createElement('input')
+    urlInputEl.setAttribute('placeholder', 'URL')
+    urlInputEl.setAttribute('type', 'url')
+    formEl.append(colorLabelEl)
+    formEl.append(fileInputEl)
+    formEl.append(fieldsetEl)
+    formEl.append(urlInputEl)
+    formEl.addEventListener('submit', event => {
+      event.preventDefault()
+      switch (formEl.querySelector('[name="position"]:checked').value) {
+        case 'center': {
+          window.document.body.style.setProperty('--offset-x', '25vw')
+          window.document.body.style.setProperty('--offset-y', '25vw')
+        }
+        break
+        case 'top-left': {
+          window.document.body.style.setProperty('--offset-x', '10vw')
+          window.document.body.style.setProperty('--offset-y', '10vw')
+        }
+        break
+        case 'top-right': {
+          window.document.body.style.setProperty('--offset-x', '50vw')
+          window.document.body.style.setProperty('--offset-y', '10vw')
+        }
+        default:
+        break
+      }
+      if (urlInputEl.value) {
+        window.document.body.style.setProperty('--color', colorInputEl.value)
+        formEl.remove()
+        if (imageEl.src) {
+          window.document.body.append(imageEl)
+        }
+        window.history.pushState({}, '', `/?url=${urlInputEl.value}`)
+      }
+    })
+    const headerEl = window.document.createElement('h1')
+    headerEl.innerText = 'Submit this form, share page, select "Add to Home Screen"'
+    window.document.body.append(formEl)
+  }
+</script>
+<style>
+  * {
+    background-color: var(--color);
+    color: var(--color);
+    margin: 0;
+    padding: 0;
+    white-space: nowrap;
+  }
+  body {
+    font-family: sans-serif;
+    width: 100vw;
+    overflow: hidden;
+  }
+  input {
+    font-size: 22px;
+    -webkit-appearance: none;
+    border: 1px solid currentColor;
+  }
+  img {
+    position: fixed;
+    height: 100%;
+    width: 100%;
+    max-width: 50vw;
+    max-height: 50vw;
+    object-fit: contain;
+    left: var(--offset-x);
+    top: var(--offset-y);
+  }
+  label,
+  fieldset,
+  input {
+    margin: .25em;
+    padding: .25em;
+  }
+  input {
+    width: 100%;
+    max-width: calc(100% - 1em);
+  }
+  input[type="file"] {
+    align-items: center;
+    justify-content: center;
+    display: flex;
+  }
+  input[type="color"],
+  input[type="radio"] {
+    height: 48px;
+    width: 48px;
+  }
+  input[type="radio"]:checked {
+    background: black;
+  }
+  label {
+    display: grid;
+    width: 100%;
+  }
+</style>
+</body>
