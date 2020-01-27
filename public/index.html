@@ -12,43 +12,11 @@
     window.document.head.append(metaEl)
   } else {
     const formEl = window.document.createElement('form')
-    const imageEl = window.document.createElement('img')
-    const imagePositionRadioCenter = window.document.createElement('input')
-    const imagePositionRadioTopLeft = window.document.createElement('input')
-    const imagePositionRadioTopRight = window.document.createElement('input')
-    const imagePositionRadioCenterLabel = window.document.createElement('label')
-    const imagePositionRadioTopLeftLabel = window.document.createElement('label')
-    const imagePositionRadioTopRightLabel = window.document.createElement('label')
-    imagePositionRadioCenterLabel.innerText = 'Center'
-    imagePositionRadioCenterLabel.append(imagePositionRadioCenter)
-    imagePositionRadioTopLeftLabel.innerText = 'Top Left'
-    imagePositionRadioTopLeftLabel.append(imagePositionRadioTopLeft)
-    imagePositionRadioTopRightLabel.innerText = 'Top Right'
-    imagePositionRadioTopRightLabel.append(imagePositionRadioTopRight)
-    imagePositionRadioCenter.setAttribute('checked', '')
-    imagePositionRadioCenter.setAttribute('type', 'radio')
-    imagePositionRadioCenter.setAttribute('name', 'position')
-    imagePositionRadioCenter.setAttribute('value', 'center')
-    imagePositionRadioTopLeft.setAttribute('type', 'radio')
-    imagePositionRadioTopLeft.setAttribute('name', 'position')
-    imagePositionRadioTopLeft.setAttribute('value', 'top-left')
-    imagePositionRadioTopRight.setAttribute('type', 'radio')
-    imagePositionRadioTopRight.setAttribute('name', 'position')
-    imagePositionRadioTopRight.setAttribute('value', 'top-right')
-    const fieldsetEl = window.document.createElement('fieldset')
-    const legendEl = window.document.createElement('legend')
-    legendEl.innerText = 'Icon Position'
-    fieldsetEl.append(legendEl)
-    fieldsetEl.append(imagePositionRadioCenterLabel)
-    fieldsetEl.append(imagePositionRadioTopLeftLabel)
-    fieldsetEl.append(imagePositionRadioTopRightLabel)
-    const colorInputEl = window.document.createElement('input')
-    colorInputEl.setAttribute('placeholder', 'Color')
-    colorInputEl.setAttribute('type', 'color')
-    // colorInputEl.setAttribute('value', '#4ADD3A')
-    const colorLabelEl = window.document.createElement('label')
-    colorLabelEl.innerText = 'Background Color'
-    colorLabelEl.append(colorInputEl)
+    const linkEl = window.document.createElement('link')
+    linkEl.setAttribute('rel', 'apple-touch-icon')
+    const nameInputEl = window.document.createElement('input')
+    nameInputEl.setAttribute('placeholder', 'Name')
+    nameInputEl.setAttribute('type', 'text')
     const fileInputEl = window.document.createElement('input')
     fileInputEl.setAttribute('type', 'file')
     fileInputEl.addEventListener('change', (e) => {
@@ -57,7 +25,7 @@
 
       reader.addEventListener('load', () => {
         // convert image file to base64 string
-        imageEl.src = reader.result
+        linkEl.href = reader.result
       })
 
       if (file) {
@@ -67,74 +35,46 @@
     const urlInputEl = window.document.createElement('input')
     urlInputEl.setAttribute('placeholder', 'URL')
     urlInputEl.setAttribute('type', 'url')
-    formEl.append(colorLabelEl)
+    formEl.append(nameInputEl)
     formEl.append(fileInputEl)
-    formEl.append(fieldsetEl)
     formEl.append(urlInputEl)
+    const buttonEl = window.document.createElement('button')
+    buttonEl.innerText = 'Submit'
+    formEl.append(buttonEl)
     formEl.addEventListener('submit', event => {
       event.preventDefault()
-      switch (formEl.querySelector('[name="position"]:checked').value) {
-        case 'center': {
-          window.document.body.style.setProperty('--offset-x', '25vw')
-          window.document.body.style.setProperty('--offset-y', '25vw')
-        }
-        break
-        case 'top-left': {
-          window.document.body.style.setProperty('--offset-x', '10vw')
-          window.document.body.style.setProperty('--offset-y', '10vw')
-        }
-        break
-        case 'top-right': {
-          window.document.body.style.setProperty('--offset-x', '50vw')
-          window.document.body.style.setProperty('--offset-y', '10vw')
-        }
-        default:
-        break
-      }
       if (urlInputEl.value) {
-        window.document.body.style.setProperty('--color', colorInputEl.value)
-        formEl.remove()
-        if (imageEl.src) {
-          window.document.body.append(imageEl)
+        if (linkEl.href) {
+          window.document.head.append(linkEl)
         }
+        if (nameInputEl.value) {
+          window.document.title = nameInputEl.value
+        }
+        formEl.remove()
+        const h1El = window.document.createElement('h1')
+        h1El.innerText = 'Add to Home Screen'
+        window.document.body.append(h1El)
         window.history.pushState({}, '', `/?url=${urlInputEl.value}`)
       }
     })
-    const headerEl = window.document.createElement('h1')
-    headerEl.innerText = 'Submit this form, share page, select "Add to Home Screen"'
     window.document.body.append(formEl)
   }
 </script>
 <style>
   * {
-    background-color: var(--color);
-    color: var(--color);
-    margin: 0;
-    padding: 0;
     white-space: nowrap;
   }
   body {
     font-family: sans-serif;
-    width: 100vw;
     overflow: hidden;
+    max-width: 100vw;
   }
   input {
     font-size: 22px;
     -webkit-appearance: none;
     border: 1px solid currentColor;
   }
-  img {
-    position: fixed;
-    height: 100%;
-    width: 100%;
-    max-width: 50vw;
-    max-height: 50vw;
-    object-fit: contain;
-    left: var(--offset-x);
-    top: var(--offset-y);
-  }
   label,
-  fieldset,
   input {
     margin: .25em;
     padding: .25em;
@@ -142,6 +82,7 @@
   input {
     width: 100%;
     max-width: calc(100% - 1em);
+    display: block;
   }
   input[type="file"] {
     align-items: center;
@@ -153,12 +94,17 @@
     height: 48px;
     width: 48px;
   }
-  input[type="radio"]:checked {
-    background: black;
-  }
   label {
     display: grid;
     width: 100%;
+  }
+  button {
+    height: 1px;
+    width: 1px;
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    visibility: hidden;
   }
 </style>
 </body>
