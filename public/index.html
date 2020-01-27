@@ -35,6 +35,9 @@
     const urlInputEl = window.document.createElement('input')
     urlInputEl.setAttribute('placeholder', 'URL')
     urlInputEl.setAttribute('type', 'url')
+    const pEl = window.document.createElement('p')
+    pEl.innerText = `Open your favorite website in a standalone window on iPhone`
+    formEl.append(pEl)
     formEl.append(nameInputEl)
     formEl.append(fileInputEl)
     formEl.append(urlInputEl)
@@ -61,9 +64,6 @@
   }
 </script>
 <style>
-  * {
-    white-space: nowrap;
-  }
   body {
     font-family: sans-serif;
     overflow: hidden;
