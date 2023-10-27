@@ -42,8 +42,11 @@
       urlInputEl.setAttribute("placeholder", "URL");
       urlInputEl.setAttribute("type", "url");
       const h1El = window.document.createElement("h1");
-      h1El.innerText = `Open any website in a standalone window on iPhone or iPad.`;
+      h1El.innerText = `save-as.app`;
       formEl.append(h1El);
+      const h2El = window.document.createElement("h2");
+      h2El.innerText = `Open any website in a standalone window on iPhone or iPad.`;
+      formEl.append(h2El);
       const nameInputLabel = window.document.createElement("label");
       nameInputLabel.innerText = "Name";
       nameInputLabel.append(nameInputEl);
@@ -100,6 +103,9 @@
       place-content: center;
       height: 100dvh;
       margin: 0;
+    }
+    h1 {
+      color: rgb(66, 47, 175);
     }
     h1 {
       font-size: 24px;
