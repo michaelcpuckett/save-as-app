@@ -42,10 +42,13 @@
       urlInputEl.setAttribute("placeholder", "URL");
       urlInputEl.setAttribute("type", "url");
       const h1El = window.document.createElement("h1");
-      h1El.innerText = `save-as.app`;
+      const h1AnchorEl = window.document.createElement("a");
+      h1AnchorEl.innerText = `save-as.app`;
+      h1AnchorEl.setAttribute("href", window.location.href);
+      h1El.append(h1AnchorEl);
       formEl.append(h1El);
       const h2El = window.document.createElement("h2");
-      h2El.innerText = `Open any website in a standalone window on iPhone or iPad.`;
+      h2El.innerText = `Open any website in a standalone window on iPhone or iPad, instead of Safari.`;
       formEl.append(h2El);
       const nameInputLabel = window.document.createElement("label");
       nameInputLabel.innerText = "Name";
@@ -73,6 +76,7 @@
           }
           formEl.remove();
           const h1El = window.document.createElement("h1");
+          const h1AnchorEl = window.document.createElement("a");
           h1El.innerText = "Add to Home Screen";
           window.document.body.append(h1El);
           window.history.pushState({}, "", `/?url=${urlInputEl.value}`);
@@ -96,6 +100,9 @@
     }
   </script>
   <style>
+    :root {
+      color-scheme: dark;
+    }
     body {
       font-family: sans-serif;
       display: flex;
@@ -104,8 +111,8 @@
       height: 100dvh;
       margin: 0;
     }
-    h1 {
-      color: rgb(66, 47, 175);
+    a {
+      color: deepskyblue;
     }
     h1 {
       font-size: 24px;
@@ -115,6 +122,9 @@
       padding: 48px;
       display: grid;
       gap: 12px;
+      width: min(100% - 48px, 480px);
+      border: 1px solid;
+      border-radius: 48px;
     }
     input {
       font-size: 22px;
@@ -142,17 +152,16 @@
       width: 100%;
     }
     button {
-      background: deepskyblue;
-      color: black;
       font: unset;
       font-size: 22px;
-      padding: 5px 11px;
-      border: 4px solid lightskyblue;
+      padding: 11px;
+      border: 1px solid white;
       border-radius: 12px;
       cursor: pointer;
     }
-    button:hover {
-      background: lightskyblue;
+    button:not(:hover) {
+      color: unset;
+      background: blue;
     }
   </style>
 </body>
