@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-<title>save-as.app</title>
 <meta
   name="viewport"
   content="width=device-width, initial-scale=1, viewport-fit=cover"
@@ -10,7 +9,6 @@
 />
 <meta name="mobile-web-app-capable" content="yes" />
 <meta name="apple-mobile-web-app-capable" content="yes" />
-<link rel="manifest" href="/manifest.json" />
 
 <style>
   :root:not(:has(h1)) {
@@ -33,6 +31,7 @@
       height: max-content;
       min-height: 100%;
       margin: 0;
+      background: #242426;
     }
 
     & a {
@@ -106,9 +105,11 @@
       width: 100%;
       gap: 0.25rem;
     }
+
     & p {
       font-size: 0.75rem;
     }
+
     & button {
       font: unset;
       font-size: 1rem;
@@ -127,111 +128,181 @@
     }
 
     & .instructions {
-      margin-top: 50vh;
-      margin-top: 50dvh;
-      margin-bottom: 50vh;
-      margin-bottom: 50dvh;
+      --margin-value: calc(50vh - 0.5rem * 1.4);
+      margin-top: var(--margin-value);
+      margin-top: var(--margin-value);
+      margin-bottom: var(--margin-value);
+      margin-bottom: var(--margin-value);
     }
   }
 </style>
 <body>
   <script>
-    if (window.location.href.includes("?url=")) {
-      const metaRefreshEl = window.document.createElement("meta");
-      metaRefreshEl.setAttribute("http-equiv", "refresh");
-      metaRefreshEl.setAttribute(
-        "content",
-        `0;url=${window.location.href.split("?url=")[1]}`
-      );
-      window.document.head.append(metaRefreshEl);
-    } else {
-      const formEl = window.document.createElement("form");
-      const linkEl = window.document.createElement("link");
-      linkEl.setAttribute("rel", "apple-touch-icon");
-      const nameInputEl = window.document.createElement("input");
-      nameInputEl.setAttribute("placeholder", "My Web App");
-      nameInputEl.setAttribute("type", "text");
-      nameInputEl.setAttribute("required", "");
-      const fileInputEl = window.document.createElement("input");
-      fileInputEl.setAttribute("type", "file");
-      fileInputEl.addEventListener("change", (e) => {
-        const file = fileInputEl.files[0];
-        const reader = new FileReader();
+    function handleNavigation() {
+      if (window.location.href.includes("?url=")) {
+        const metaRefreshEl = window.document.createElement("meta");
+        metaRefreshEl.setAttribute("http-equiv", "refresh");
+        metaRefreshEl.setAttribute(
+          "content",
+          `0;url=${window.location.href.split("?url=")[1]}`
+        );
+        window.document.head.append(metaRefreshEl);
+      } else {
+        const priorIconLinkEl = window.document.querySelector(
+          "link[rel='apple-touch-icon']"
+        );
 
-        reader.addEventListener("load", () => {
-          // convert image file to base64 string
-          linkEl.href = reader.result;
+        if (priorIconLinkEl) {
+          priorIconLinkEl.remove();
+        }
+
+        const priorManifestLinkEl = window.document.querySelector(
+          "link[rel='manifest']"
+        );
+
+        if (priorManifestLinkEl) {
+          priorManifestLinkEl.remove();
+        }
+
+        const priorH1El = window.document.querySelector("h1");
+
+        if (priorH1El) {
+          priorH1El.remove();
+        }
+
+        window.document.title = "save-as.app";
+
+        const iconLinkEl = window.document.createElement("link");
+        iconLinkEl.setAttribute("rel", "apple-touch-icon");
+
+        // <form>
+        const formEl = window.document.createElement("form");
+
+        // <form> <h1>
+        const h1El = window.document.createElement("h1");
+
+        // <form> <h1> <a>
+        const h1AnchorEl = window.document.createElement("a");
+        h1AnchorEl.textContent = "save-as.app";
+        h1AnchorEl.setAttribute("href", window.location.href);
+
+        // <form> <h2>
+        const h2El = window.document.createElement("h2");
+        h2El.textContent =
+          "Open any website in a standalone window on iPhone or iPad, instead of Safari.";
+
+        // <form> <label>
+        const nameInputLabel = window.document.createElement("label");
+        nameInputLabel.textContent = "Title*";
+
+        // <form> <label>
+        const fileInputLabel = window.document.createElement("label");
+        fileInputLabel.textContent = "Icon";
+
+        // <form> <label>
+        const urlInputLabel = window.document.createElement("label");
+        urlInputLabel.textContent = "URL*";
+
+        // <form> <button>
+        const buttonEl = window.document.createElement("button");
+        buttonEl.textContent = "Next";
+
+        // <form> <label> <input type="text">
+        const nameInputEl = window.document.createElement("input");
+        nameInputEl.setAttribute("placeholder", "My Web App");
+        nameInputEl.setAttribute("type", "text");
+        nameInputEl.setAttribute("required", "");
+
+        // <form> <label> <input type="file">
+        const fileInputEl = window.document.createElement("input");
+        fileInputEl.setAttribute("type", "file");
+        fileInputEl.addEventListener("change", () => {
+          const file = fileInputEl.files[0];
+          const reader = new FileReader();
+
+          reader.addEventListener("load", () => {
+            iconLinkEl.href = reader.result;
+          });
+
+          if (file) {
+            // Convert image file to base64 string.
+            reader.readAsDataURL(file);
+          }
         });
 
-        if (file) {
-          reader.readAsDataURL(file);
-        }
-      });
-      const urlInputEl = window.document.createElement("input");
-      urlInputEl.setAttribute("placeholder", "https://...");
-      urlInputEl.setAttribute("type", "url");
-      urlInputEl.setAttribute("required", "");
-      const h1El = window.document.createElement("h1");
-      const h1AnchorEl = window.document.createElement("a");
-      h1AnchorEl.innerText = `save-as.app`;
-      h1AnchorEl.setAttribute("href", window.location.href);
-      h1El.append(h1AnchorEl);
-      formEl.append(h1El);
-      const h2El = window.document.createElement("h2");
-      h2El.innerText = `Open any website in a standalone window on iPhone or iPad, instead of Safari.`;
-      formEl.append(h2El);
-      const nameInputLabel = window.document.createElement("label");
-      nameInputLabel.innerText = "Title*";
-      nameInputLabel.append(nameInputEl);
-      const fileInputLabel = window.document.createElement("label");
-      fileInputLabel.innerText = "Icon";
-      fileInputLabel.append(fileInputEl);
-      const urlInputLabel = window.document.createElement("label");
-      urlInputLabel.innerText = "URL*";
-      urlInputLabel.append(urlInputEl);
-      formEl.append(nameInputLabel);
-      formEl.append(fileInputLabel);
-      formEl.append(urlInputLabel);
-      const buttonEl = window.document.createElement("button");
-      buttonEl.innerText = "Next";
-      formEl.append(buttonEl);
-      const paragraphEl = window.document.createElement("p");
-      paragraphEl.textContent =
-        'On the next screen, hit the share icon, then select "Add to Home Screen" from the share sheet.';
-      formEl.append(paragraphEl);
-      formEl.addEventListener("submit", (event) => {
-        event.preventDefault();
-        if (urlInputEl.value) {
-          if (linkEl.href) {
-            window.document.head.append(linkEl);
+        // <form> <label> <input type="url">
+        const urlInputEl = window.document.createElement("input");
+        urlInputEl.setAttribute("placeholder", "http link to website");
+        urlInputEl.setAttribute("type", "url");
+        urlInputEl.setAttribute("required", "");
+
+        // <form> <p>
+        const paragraphEl = window.document.createElement("p");
+        paragraphEl.textContent =
+          'On the next screen, hit the share icon, then select "Add to Home Screen" from the share sheet.';
+
+        formEl.addEventListener("submit", (event) => {
+          event.preventDefault();
+          if (urlInputEl.value) {
+            const startUrl = `/?url=${urlInputEl.value}`;
+            const manifestDataUri = `data:application/manifest+json;charset=utf-8,${encodeURIComponent(
+              JSON.stringify({
+                name: nameInputEl.value || "",
+                short_name: nameInputEl.value || "",
+                start_url: startUrl,
+                display: "standalone",
+                background_color: "#000000",
+                theme_color: "#000000",
+              })
+            )}`;
+
+            const manifestLinkEl = window.document.createElement("link");
+            manifestLinkEl.setAttribute("rel", "manifest");
+            manifestLinkEl.setAttribute("href", manifestDataUri);
+
+            const h1El = window.document.createElement("h1");
+            h1El.textContent = "Add to Home Screen";
+            h1El.classList.add("instructions");
+
+            window.history.pushState({}, "", startUrl);
+
+            if (iconLinkEl.href) {
+              window.document.head.append(iconLinkEl);
+            }
+
+            if (nameInputEl.value) {
+              window.document.title = nameInputEl.value;
+            }
+
+            window.document.head.append(manifestLinkEl);
+            formEl.remove();
+            window.document.body.prepend(h1El);
+
+            window.scrollTo(0, 0);
           }
-          if (nameInputEl.value) {
-            window.document.title = nameInputEl.value;
-          }
-          formEl.remove();
-          const h1El = window.document.createElement("h1");
-          h1El.innerText = "Add to Home Screen";
-          h1El.classList.add("instructions");
-          window.document.body.prepend(h1El);
-          window.history.pushState({}, "", `/?url=${urlInputEl.value}`);
-          const manifestLinkEl = window.document.createElement("link");
-          manifestLinkEl.setAttribute("rel", "manifest");
-          const manifestDataUri = `data:application/manifest+json;charset=utf-8,${encodeURIComponent(
-            JSON.stringify({
-              name: window.document.title,
-              short_name: window.document.title,
-              start_url: window.location.href,
-              display: "standalone",
-              background_color: "#000000",
-              theme_color: "#000000",
-            })
-          )}`;
-          manifestLinkEl.setAttribute("href", manifestDataUri);
-          window.document.head.append(manifestLinkEl);
-        }
-      });
-      window.document.body.append(formEl);
+        });
+
+        h1El.append(h1AnchorEl);
+
+        nameInputLabel.append(nameInputEl);
+        fileInputLabel.append(fileInputEl);
+        urlInputLabel.append(urlInputEl);
+
+        formEl.append(h1El);
+        formEl.append(h2El);
+        formEl.append(nameInputLabel);
+        formEl.append(fileInputLabel);
+        formEl.append(urlInputLabel);
+        formEl.append(buttonEl);
+        formEl.append(paragraphEl);
+
+        window.document.body.prepend(formEl);
+      }
     }
+
+    handleNavigation();
+
+    window.addEventListener("popstate", handleNavigation);
   </script>
   <footer>
     <h2>How does this work?</h2>
