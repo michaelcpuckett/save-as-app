@@ -13,113 +13,125 @@
 <link rel="manifest" href="/manifest.json" />
 
 <style>
-  :root {
+  :root:not(:has(h1)) {
+    & footer {
+      display: none;
+    }
+  }
+
+  :root:has(h1) {
     color-scheme: dark;
     height: 100%;
     font-size: 24px;
-  }
-  body {
-    font-family: sans-serif;
-    display: grid;
-    line-height: 1.4;
-    place-items: center;
-    place-content: center;
-    height: max-content;
-    min-height: 100%;
-    margin: 0;
-  }
-  a {
-    color: deepskyblue;
-  }
-  h1 {
-    font-size: 1rem;
-  }
-  form {
-    position: relative;
-    box-sizing: border-box;
-    padding: 1rem;
-    padding-top: calc(1rem + 18px);
-    display: grid;
-    gap: 1rem;
-    width: min(100% - 2rem, 20rem);
-    border: 0.1rem solid #4c4b4b;
-    border-radius: 2rem;
-    margin: 2rem auto;
-    overflow: hidden;
-  }
-  @media (min-width: 600px) {
-    form {
+
+    & body {
+      font-family: sans-serif;
+      display: grid;
+      line-height: 1.4;
+      place-items: center;
+      place-content: center;
+      height: max-content;
+      min-height: 100%;
+      margin: 0;
+    }
+
+    & a {
+      color: deepskyblue;
+    }
+
+    & h1 {
+      font-size: 1rem;
+    }
+
+    & form {
+      position: relative;
+      box-sizing: border-box;
+      display: grid;
+      gap: 1rem;
+      width: min(100% - 2rem, 20rem);
+      border: 0.1rem solid #4c4b4b;
+      border-radius: 2rem;
+      margin: 2rem auto;
+      overflow: hidden;
       padding: 2rem;
       padding-top: calc(2rem + 18px);
     }
-  }
-  form:before {
-    position: absolute;
-    content: "";
-    left: 0;
-    right: 0;
-    height: 18px;
-    background: #4c4b4b;
-  }
-  form:after {
-    position: absolute;
-    content: "";
-    left: 0;
-    right: 0;
-    top: 4px;
-    height: 8px;
-    background: url("handle-buttons.svg");
-    background-repeat: no-repeat;
-    background-position: center center;
-  }
-  h2 {
-    margin: 0;
-    font-size: 1rem;
-  }
-  input {
-    font-size: 0.75rem;
-    border: 0.1rem solid #4c4b4b;
-    width: 100%;
-    display: block;
-    padding: 0.5rem;
-    border-radius: 0.5rem;
-    box-sizing: border-box;
-  }
-  input[type="file"] {
-    align-items: center;
-    justify-content: center;
-    display: flex;
-  }
-  label {
-    font-size: 0.75rem;
-    font-weight: bold;
-    display: grid;
-    width: 100%;
-    gap: 0.25rem;
-  }
-  p {
-    font-size: 0.75rem;
-  }
-  button {
-    font: unset;
-    font-size: 1rem;
-    padding: 0.5rem;
-    border: 0.1rem solid #4c4b4b;
-    border-radius: 0.5rem;
-    cursor: pointer;
-    font-weight: bold;
-    color: Canvas;
-    background: deepskyblue;
-  }
-  footer {
-    width: min(100% - 2rem, 20rem);
-    margin-bottom: 2rem;
-  }
-  .instructions {
-    margin-top: 50vh;
-    margin-top: 50dvh;
-    margin-bottom: 50vh;
-    margin-bottom: 50dvh;
+
+    & form:before {
+      position: absolute;
+      content: "";
+      left: 0;
+      right: 0;
+      height: 18px;
+      background: #4c4b4b;
+    }
+
+    & form:after {
+      position: absolute;
+      content: "";
+      left: 0;
+      right: 0;
+      top: 4px;
+      height: 8px;
+      background: url("handle-buttons.svg");
+      background-repeat: no-repeat;
+      background-position: center center;
+    }
+
+    & h2 {
+      margin: 0;
+      font-size: 1rem;
+    }
+
+    & input {
+      font-size: 0.75rem;
+      border: 0.1rem solid #4c4b4b;
+      width: 100%;
+      display: block;
+      padding: 0.5rem;
+      border-radius: 0.5rem;
+      box-sizing: border-box;
+    }
+
+    & input[type="file"] {
+      align-items: center;
+      justify-content: center;
+      display: flex;
+    }
+
+    & label {
+      font-size: 0.75rem;
+      font-weight: bold;
+      display: grid;
+      width: 100%;
+      gap: 0.25rem;
+    }
+    & p {
+      font-size: 0.75rem;
+    }
+    & button {
+      font: unset;
+      font-size: 1rem;
+      padding: 0.5rem;
+      border: 0.1rem solid #4c4b4b;
+      border-radius: 0.5rem;
+      cursor: pointer;
+      font-weight: bold;
+      color: Canvas;
+      background: deepskyblue;
+    }
+
+    & footer {
+      width: min(100% - 2rem, 20rem);
+      margin-bottom: 2rem;
+    }
+
+    & .instructions {
+      margin-top: 50vh;
+      margin-top: 50dvh;
+      margin-bottom: 50vh;
+      margin-bottom: 50dvh;
+    }
   }
 </style>
 <body>
