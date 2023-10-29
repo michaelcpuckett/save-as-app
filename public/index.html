@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<title>save-as.app</title>
 <meta
   name="viewport"
   content="width=device-width, initial-scale=1, viewport-fit=cover"
@@ -148,29 +149,13 @@
         );
         window.document.head.append(metaRefreshEl);
       } else {
-        const priorIconLinkEl = window.document.querySelector(
-          "link[rel='apple-touch-icon']"
-        );
-
-        if (priorIconLinkEl) {
-          priorIconLinkEl.remove();
-        }
-
         const priorManifestLinkEl = window.document.querySelector(
           "link[rel='manifest']"
         );
 
         if (priorManifestLinkEl) {
-          priorManifestLinkEl.remove();
+          window.location.reload();
         }
-
-        const priorH1El = window.document.querySelector("h1");
-
-        if (priorH1El) {
-          priorH1El.remove();
-        }
-
-        window.document.title = "save-as.app";
 
         const iconLinkEl = window.document.createElement("link");
         iconLinkEl.setAttribute("rel", "apple-touch-icon");
