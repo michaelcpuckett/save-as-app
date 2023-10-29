@@ -361,15 +361,15 @@
           "is-showing-step is-showing-step--configuration"
         );
 
-        const iconLinkEl = window.document.createElement("link");
-        iconLinkEl.setAttribute("rel", "apple-touch-icon");
+        const iconLinkElement = window.document.createElement("link");
+        iconLinkElement.setAttribute("rel", "apple-touch-icon");
 
         fileInputElement.addEventListener("change", () => {
           const file = fileInputElement.files[0];
           const reader = new FileReader();
 
           reader.addEventListener("load", () => {
-            iconLinkEl.href = reader.result;
+            iconLinkElement.href = reader.result;
           });
 
           if (file) {
@@ -413,8 +413,8 @@
           manifestLinkElement.setAttribute("rel", "manifest");
           manifestLinkElement.setAttribute("href", manifestDataUri);
 
-          if (iconLinkEl.href) {
-            window.document.head.append(iconLinkEl);
+          if (iconLinkElement.href) {
+            window.document.head.append(iconLinkElement);
           }
 
           if (titleInputElement.value) {
