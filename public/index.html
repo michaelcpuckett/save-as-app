@@ -340,13 +340,13 @@
 
     function handleNavigation() {
       if (window.location.href.includes("?url=")) {
-        const metaRefreshEl = window.document.createElement("meta");
-        metaRefreshEl.setAttribute("http-equiv", "refresh");
-        metaRefreshEl.setAttribute(
+        const metaRefreshElement = window.document.createElement("meta");
+        metaRefreshElement.setAttribute("http-equiv", "refresh");
+        metaRefreshElement.setAttribute(
           "content",
           `0;url=${window.location.href.split("?url=")[1]}`
         );
-        window.document.head.append(metaRefreshEl);
+        window.document.head.append(metaRefreshElement);
       } else {
         const priorManifestLinkElement = window.document.querySelector(
           "link[rel='manifest']"
@@ -409,9 +409,9 @@
             })
           )}`;
 
-          const manifestLinkEl = window.document.createElement("link");
-          manifestLinkEl.setAttribute("rel", "manifest");
-          manifestLinkEl.setAttribute("href", manifestDataUri);
+          const manifestLinkElement = window.document.createElement("link");
+          manifestLinkElement.setAttribute("rel", "manifest");
+          manifestLinkElement.setAttribute("href", manifestDataUri);
 
           if (iconLinkEl.href) {
             window.document.head.append(iconLinkEl);
@@ -421,7 +421,7 @@
             window.document.title = titleInputElement.value;
           }
 
-          window.document.head.append(manifestLinkEl);
+          window.document.head.append(manifestLinkElement);
           window.document.body.setAttribute(
             "class",
             "is-showing-step is-showing-step--add-to-homescreen"
