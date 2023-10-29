@@ -20,7 +20,8 @@
   }
   body {
     font-family: sans-serif;
-    display: flex;
+    display: grid;
+    line-height: 1.4;
     place-items: center;
     place-content: center;
     height: max-content;
@@ -107,10 +108,18 @@
     border-radius: 0.5rem;
     cursor: pointer;
     font-weight: bold;
-  }
-  button:not(:hover) {
     color: Canvas;
     background: deepskyblue;
+  }
+  footer {
+    width: min(100% - 2rem, 20rem);
+    margin-bottom: 2rem;
+  }
+  .instructions {
+    margin-top: 50vh;
+    margin-top: 50dvh;
+    margin-bottom: 50vh;
+    margin-bottom: 50dvh;
   }
 </style>
 <body>
@@ -189,9 +198,9 @@
           }
           formEl.remove();
           const h1El = window.document.createElement("h1");
-          const h1AnchorEl = window.document.createElement("a");
           h1El.innerText = "Add to Home Screen";
-          window.document.body.append(h1El);
+          h1El.classList.add("instructions");
+          window.document.body.prepend(h1El);
           window.history.pushState({}, "", `/?url=${urlInputEl.value}`);
           const manifestLinkEl = window.document.createElement("link");
           manifestLinkEl.setAttribute("rel", "manifest");
@@ -212,4 +221,20 @@
       window.document.body.append(formEl);
     }
   </script>
+  <footer>
+    <h2>How does this work?</h2>
+    <p>
+      Web browsers look for a `manifest.json` file to determine whether a
+      website is a Progressive Web App. This file contains metadata about the
+      app, including its name, icon, and URL. This website generates a
+      `manifest.json` file, configured to launch as a standalone app that opens
+      in a separate window on iPhone and iPad.
+    </p>
+    <p>
+      This website is open source. You can view the source code on
+      <a href="https://www.github.com/michaelcpuckett/standalone-web-wrapper"
+        >Github</a
+      >.
+    </p>
+  </footer>
 </body>
