@@ -10,18 +10,49 @@
 />
 <meta name="mobile-web-app-capable" content="yes" />
 <meta name="apple-mobile-web-app-capable" content="yes" />
-
 <style>
-  :root:not(:has(h1)) {
-    & footer {
+  * {
+    box-sizing: border-box;
+    text-wrap: balance;
+    text-wrap: pretty;
+  }
+
+  :root:not(:has(.is-showing-step)) {
+    & body {
       display: none;
     }
   }
 
-  :root:has(h1) {
+  :root:has(.is-showing-step) {
     color-scheme: dark;
     height: 100%;
     font-size: 24px;
+
+    &:not(:has(.is-showing-step--configuration)) {
+      & .step--configuration {
+        display: none;
+      }
+
+      & ol p {
+        font-size: 1.125rem;
+      }
+
+      @media (min-width: 600px) {
+        & ol p {
+          font-size: 1.25rem;
+        }
+      }
+    }
+
+    &:not(:has(.is-showing-step--add-to-homescreen)) {
+      & .step--add-to-homescreen {
+        display: none;
+      }
+
+      & p {
+        font-size: 0.75rem;
+      }
+    }
 
     & body {
       font-family: sans-serif;
@@ -33,6 +64,11 @@
       min-height: 100%;
       margin: 0;
       background: #242426;
+    }
+
+    & main {
+      width: min(100% - 2rem, 20rem);
+      margin: 0 auto;
     }
 
     & a {
@@ -48,13 +84,20 @@
       box-sizing: border-box;
       display: grid;
       gap: 1rem;
-      width: min(100% - 2rem, 20rem);
+      width: 100%;
       border: 0.1rem solid #4c4b4b;
       border-radius: 2rem;
       margin: 2rem auto;
       overflow: hidden;
-      padding: 2rem;
-      padding-top: calc(2rem + 18px);
+      padding: 1rem;
+      padding-top: calc(1rem + 18px);
+    }
+
+    @media (min-width: 600px) {
+      & form {
+        padding: 2rem;
+        padding-top: calc(2rem + 18px);
+      }
     }
 
     & form:before {
@@ -107,8 +150,12 @@
       gap: 0.25rem;
     }
 
-    & p {
-      font-size: 0.75rem;
+    & label:has([aria-invalid="true"]) {
+      color: red;
+
+      & input {
+        border-color: red;
+      }
     }
 
     & button {
@@ -128,17 +175,169 @@
       margin-bottom: 2rem;
     }
 
-    & .instructions {
-      --margin-value: calc(50vh - 0.5rem * 1.4);
-      margin-top: var(--margin-value);
-      margin-top: var(--margin-value);
-      margin-bottom: var(--margin-value);
-      margin-bottom: var(--margin-value);
+    & .step--add-to-homescreen {
+      min-height: 100vh;
+      min-height: 100dvh;
+      display: grid;
+      padding: 1rem;
+      text-align: center;
+      place-items: center;
+      place-content: center;
+
+      & p {
+        max-width: 480px;
+        margin: 0 auto;
+      }
+
+      & ol {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        display: grid;
+        gap: 1rem;
+      }
+
+      & .share-sheet {
+        margin-top: 1rem;
+      }
+
+      & .share-sheet-item {
+        border: 0.1rem solid CanvasText;
+        padding: 1rem;
+        text-align: left;
+
+        &:not(.share-sheet-item--focus) {
+          filter: blur(1px);
+          transform: scale(0.9);
+        }
+      }
+
+      & svg {
+        display: grid;
+        place-self: center;
+        margin: 1rem auto;
+        max-width: 67px;
+
+        & path {
+          fill: deepskyblue;
+        }
+      }
     }
+  }
+
+  .visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    clip-path: inset(50%);
+    white-space: nowrap;
   }
 </style>
 <body>
+  <main>
+    <section class="step--configuration">
+      <form novalidate>
+        <h1>
+          <a href="https://save-as.app">save-as.app</a>
+        </h1>
+        <h2>
+          Open any website in a standalone window on iPhone or iPad, instead of
+          Safari.
+        </h2>
+        <label>
+          Title*
+          <input type="text" placeholder="My Web App" required />
+        </label>
+        <label>
+          Icon
+          <input type="file" />
+        </label>
+        <label>
+          URL*
+          <input type="url" value="https://" required />
+        </label>
+        <button type="submit">Next</button>
+        <p>
+          On the next screen, hit the share icon, then select "Add to Home
+          Screen" from the share sheet.
+        </p>
+      </form>
+    </section>
+    <section class="step--add-to-homescreen">
+      <h1 class="visually-hidden">Instructions</h1>
+      <ol>
+        <li>
+          <p>First, press Safari's Share button.</p>
+          <svg
+            aria-hidden="true"
+            version="1.1"
+            xmlns="http://www.w3.org/2000/svg"
+            xmlns:xlink="http://www.w3.org/1999/xlink"
+            x="0px"
+            y="0px"
+            viewBox="0 0 256 256"
+            enable-background="new 0 0 256 256"
+            xml:space="preserve"
+          >
+            <path
+              fill="#000000"
+              d="M99.6,51.2l23.1-23.1v126.6c0,3.2,2.1,5.4,5.4,5.4s5.4-2.1,5.4-5.4V28.1l23.1,23.1c1.1,1.1,2.1,1.6,3.8,1.6s2.7-0.5,3.8-1.6c2.1-2.1,2.1-5.4,0-7.5l-32.2-32.2c-0.5-0.5-1.1-1.1-1.6-1.1c-1.1-0.5-2.7-0.5-4.3,0c-0.5,0.5-1.1,0.5-1.6,1.1L92.1,43.7c-2.1,2.1-2.1,5.4,0,7.5C94.2,53.4,97.4,53.4,99.6,51.2z M203.1,74.3h-42.9V85h42.9v150.2H52.9V85h42.9V74.3H52.9c-5.9,0-10.7,4.8-10.7,10.7v150.2c0,5.9,4.8,10.7,10.7,10.7h150.2c5.9,0,10.7-4.8,10.7-10.7V85C213.9,79.1,209,74.3,203.1,74.3z"
+            />
+          </svg>
+        </li>
+        <li>
+          <p>Then, select "Add to Home Screen" from the share sheet menu.</p>
+          <div class="share-sheet" aria-hidden="true">
+            <div class="share-sheet-item">Add Bookmark</div>
+            <div class="share-sheet-item">Find on Page</div>
+            <div class="share-sheet-item share-sheet-item--focus">
+              Add to Home Screen
+            </div>
+            <div class="share-sheet-item">Print</div>
+          </div>
+        </li>
+      </ol>
+    </section>
+  </main>
+  <footer>
+    <h2>How does this work?</h2>
+    <p>
+      Web browsers look for a <code>manifest.json</code> file to determine
+      whether a website can be opened as a Progressive Web App. This website
+      generates a custom <code>manifest.json</code> file, configured to launch
+      as a standalone app that opens in a separate window on iPhone and iPad.
+    </p>
+    <p>
+      This website is open source. You can view the source code on
+      <a href="https://www.github.com/michaelcpuckett/save-as-app">Github</a>.
+    </p>
+  </footer>
   <script>
+    const formElement = window.document.querySelector("form");
+    const titleInputElement = formElement.querySelector('input[type="text"]');
+    const fileInputElement = formElement.querySelector('input[type="file"]');
+    const urlInputElement = formElement.querySelector('input[type="url"]');
+    const inputElements = [
+      titleInputElement,
+      fileInputElement,
+      urlInputElement,
+    ];
+
+    function handleInput(event) {
+      const inputElement = event.target;
+      const value = inputElement.value;
+
+      if (value) {
+        inputElement.removeAttribute("aria-invalid");
+      }
+    }
+
+    for (const inputElement of inputElements) {
+      inputElement.addEventListener("input", handleInput);
+    }
+
     function handleNavigation() {
       if (window.location.href.includes("?url=")) {
         const metaRefreshEl = window.document.createElement("meta");
@@ -149,60 +348,24 @@
         );
         window.document.head.append(metaRefreshEl);
       } else {
-        const priorManifestLinkEl = window.document.querySelector(
+        const priorManifestLinkElement = window.document.querySelector(
           "link[rel='manifest']"
         );
 
-        if (priorManifestLinkEl) {
+        if (priorManifestLinkElement) {
           window.location.reload();
         }
+
+        window.document.body.setAttribute(
+          "class",
+          "is-showing-step is-showing-step--configuration"
+        );
 
         const iconLinkEl = window.document.createElement("link");
         iconLinkEl.setAttribute("rel", "apple-touch-icon");
 
-        // <form>
-        const formEl = window.document.createElement("form");
-
-        // <form> <h1>
-        const h1El = window.document.createElement("h1");
-
-        // <form> <h1> <a>
-        const h1AnchorEl = window.document.createElement("a");
-        h1AnchorEl.textContent = "save-as.app";
-        h1AnchorEl.setAttribute("href", window.location.href);
-
-        // <form> <h2>
-        const h2El = window.document.createElement("h2");
-        h2El.textContent =
-          "Open any website in a standalone window on iPhone or iPad, instead of Safari.";
-
-        // <form> <label>
-        const nameInputLabel = window.document.createElement("label");
-        nameInputLabel.textContent = "Title*";
-
-        // <form> <label>
-        const fileInputLabel = window.document.createElement("label");
-        fileInputLabel.textContent = "Icon";
-
-        // <form> <label>
-        const urlInputLabel = window.document.createElement("label");
-        urlInputLabel.textContent = "URL*";
-
-        // <form> <button>
-        const buttonEl = window.document.createElement("button");
-        buttonEl.textContent = "Next";
-
-        // <form> <label> <input type="text">
-        const nameInputEl = window.document.createElement("input");
-        nameInputEl.setAttribute("placeholder", "My Web App");
-        nameInputEl.setAttribute("type", "text");
-        nameInputEl.setAttribute("required", "");
-
-        // <form> <label> <input type="file">
-        const fileInputEl = window.document.createElement("input");
-        fileInputEl.setAttribute("type", "file");
-        fileInputEl.addEventListener("change", () => {
-          const file = fileInputEl.files[0];
+        fileInputElement.addEventListener("change", () => {
+          const file = fileInputElement.files[0];
           const reader = new FileReader();
 
           reader.addEventListener("load", () => {
@@ -215,73 +378,57 @@
           }
         });
 
-        // <form> <label> <input type="url">
-        const urlInputEl = window.document.createElement("input");
-        urlInputEl.setAttribute("placeholder", "http link to website");
-        urlInputEl.setAttribute("type", "url");
-        urlInputEl.setAttribute("required", "");
-
-        // <form> <p>
-        const paragraphEl = window.document.createElement("p");
-        paragraphEl.textContent =
-          'On the next screen, hit the share icon, then select "Add to Home Screen" from the share sheet.';
-
-        formEl.addEventListener("submit", (event) => {
+        formElement.addEventListener("submit", (event) => {
           event.preventDefault();
-          if (urlInputEl.value) {
-            const startUrl = `/?url=${urlInputEl.value}`;
-            const manifestDataUri = `data:application/manifest+json;charset=utf-8,${encodeURIComponent(
-              JSON.stringify({
-                name: nameInputEl.value || "",
-                short_name: nameInputEl.value || "",
-                start_url: startUrl,
-                display: "standalone",
-                background_color: "#000000",
-                theme_color: "#000000",
-              })
-            )}`;
 
-            const manifestLinkEl = window.document.createElement("link");
-            manifestLinkEl.setAttribute("rel", "manifest");
-            manifestLinkEl.setAttribute("href", manifestDataUri);
+          const invalidElements = inputElements.filter(
+            (InputElement) => !InputElement.validity.valid
+          );
 
-            const h1El = window.document.createElement("h1");
-            h1El.textContent = "Add to Home Screen";
-            h1El.classList.add("instructions");
-
-            window.history.pushState({}, "", startUrl);
-
-            if (iconLinkEl.href) {
-              window.document.head.append(iconLinkEl);
+          if (invalidElements.length) {
+            for (const InputElement of inputElements) {
+              InputElement.setAttribute("aria-invalid", "false");
             }
 
-            if (nameInputEl.value) {
-              window.document.title = nameInputEl.value;
+            for (const invalidElement of invalidElements) {
+              invalidElement.setAttribute("aria-invalid", "true");
             }
 
-            window.document.head.append(manifestLinkEl);
-            formEl.remove();
-            window.document.body.prepend(h1El);
-
-            window.scrollTo(0, 0);
+            return;
           }
+
+          const startUrl = `/?url=${urlInputElement.value}`;
+          const manifestDataUri = `data:application/manifest+json;charset=utf-8,${encodeURIComponent(
+            JSON.stringify({
+              name: titleInputElement.value || "",
+              short_name: titleInputElement.value || "",
+              start_url: startUrl,
+              display: "standalone",
+              background_color: "#000000",
+              theme_color: "#000000",
+            })
+          )}`;
+
+          const manifestLinkEl = window.document.createElement("link");
+          manifestLinkEl.setAttribute("rel", "manifest");
+          manifestLinkEl.setAttribute("href", manifestDataUri);
+
+          if (iconLinkEl.href) {
+            window.document.head.append(iconLinkEl);
+          }
+
+          if (titleInputElement.value) {
+            window.document.title = titleInputElement.value;
+          }
+
+          window.document.head.append(manifestLinkEl);
+          window.document.body.setAttribute(
+            "class",
+            "is-showing-step is-showing-step--add-to-homescreen"
+          );
+          window.history.pushState({}, "", startUrl);
+          window.scrollTo(0, 0);
         });
-
-        h1El.append(h1AnchorEl);
-
-        nameInputLabel.append(nameInputEl);
-        fileInputLabel.append(fileInputEl);
-        urlInputLabel.append(urlInputEl);
-
-        formEl.append(h1El);
-        formEl.append(h2El);
-        formEl.append(nameInputLabel);
-        formEl.append(fileInputLabel);
-        formEl.append(urlInputLabel);
-        formEl.append(buttonEl);
-        formEl.append(paragraphEl);
-
-        window.document.body.prepend(formEl);
       }
     }
 
@@ -289,20 +436,4 @@
 
     window.addEventListener("popstate", handleNavigation);
   </script>
-  <footer>
-    <h2>How does this work?</h2>
-    <p>
-      Web browsers look for a `manifest.json` file to determine whether a
-      website is a Progressive Web App. This file contains metadata about the
-      app, including its name, icon, and URL. This website generates a
-      `manifest.json` file, configured to launch as a standalone app that opens
-      in a separate window on iPhone and iPad.
-    </p>
-    <p>
-      This website is open source. You can view the source code on
-      <a href="https://www.github.com/michaelcpuckett/standalone-web-wrapper"
-        >Github</a
-      >.
-    </p>
-  </footer>
 </body>
