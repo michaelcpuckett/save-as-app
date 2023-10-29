@@ -1,11 +1,118 @@
 <!DOCTYPE html>
-<link rel="manifest" href="/manifest.json" />
+<title>save-as.app</title>
 <meta
   name="viewport"
-  content="width=device-width, initial-scale=1. viewport-fit=cover"
+  content="width=device-width, initial-scale=1, viewport-fit=cover"
+/>
+<meta
+  name="description"
+  content="Open any website in a standalone window on iPhone or iPad, instead of Safari."
 />
 <meta name="mobile-web-app-capable" content="yes" />
 <meta name="apple-mobile-web-app-capable" content="yes" />
+<link rel="manifest" href="/manifest.json" />
+
+<style>
+  :root {
+    color-scheme: dark;
+    height: 100%;
+    font-size: 24px;
+  }
+  body {
+    font-family: sans-serif;
+    display: flex;
+    place-items: center;
+    place-content: center;
+    height: max-content;
+    min-height: 100%;
+    margin: 0;
+  }
+  a {
+    color: deepskyblue;
+  }
+  h1 {
+    font-size: 1rem;
+  }
+  form {
+    position: relative;
+    box-sizing: border-box;
+    padding: 1rem;
+    padding-top: calc(1rem + 18px);
+    display: grid;
+    gap: 1rem;
+    width: min(100% - 2rem, 20rem);
+    border: 0.1rem solid #4c4b4b;
+    border-radius: 2rem;
+    margin: 2rem auto;
+    overflow: hidden;
+  }
+  @media (min-width: 600px) {
+    form {
+      padding: 2rem;
+      padding-top: calc(2rem + 18px);
+    }
+  }
+  form:before {
+    position: absolute;
+    content: "";
+    left: 0;
+    right: 0;
+    height: 18px;
+    background: #4c4b4b;
+  }
+  form:after {
+    position: absolute;
+    content: "";
+    left: 0;
+    right: 0;
+    top: 4px;
+    height: 8px;
+    background: url("handle-buttons.svg");
+    background-repeat: no-repeat;
+    background-position: center center;
+  }
+  h2 {
+    margin: 0;
+    font-size: 1rem;
+  }
+  input {
+    font-size: 0.75rem;
+    border: 0.1rem solid #4c4b4b;
+    width: 100%;
+    display: block;
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    box-sizing: border-box;
+  }
+  input[type="file"] {
+    align-items: center;
+    justify-content: center;
+    display: flex;
+  }
+  label {
+    font-size: 0.75rem;
+    font-weight: bold;
+    display: grid;
+    width: 100%;
+    gap: 0.25rem;
+  }
+  p {
+    font-size: 0.75rem;
+  }
+  button {
+    font: unset;
+    font-size: 1rem;
+    padding: 0.5rem;
+    border: 0.1rem solid #4c4b4b;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    font-weight: bold;
+  }
+  button:not(:hover) {
+    color: Canvas;
+    background: deepskyblue;
+  }
+</style>
 <body>
   <script>
     if (window.location.href.includes("?url=")) {
@@ -21,8 +128,9 @@
       const linkEl = window.document.createElement("link");
       linkEl.setAttribute("rel", "apple-touch-icon");
       const nameInputEl = window.document.createElement("input");
-      nameInputEl.setAttribute("placeholder", "Name");
+      nameInputEl.setAttribute("placeholder", "My Web App");
       nameInputEl.setAttribute("type", "text");
+      nameInputEl.setAttribute("required", "");
       const fileInputEl = window.document.createElement("input");
       fileInputEl.setAttribute("type", "file");
       fileInputEl.addEventListener("change", (e) => {
@@ -39,8 +147,9 @@
         }
       });
       const urlInputEl = window.document.createElement("input");
-      urlInputEl.setAttribute("placeholder", "URL");
+      urlInputEl.setAttribute("placeholder", "https://...");
       urlInputEl.setAttribute("type", "url");
+      urlInputEl.setAttribute("required", "");
       const h1El = window.document.createElement("h1");
       const h1AnchorEl = window.document.createElement("a");
       h1AnchorEl.innerText = `save-as.app`;
@@ -51,20 +160,24 @@
       h2El.innerText = `Open any website in a standalone window on iPhone or iPad, instead of Safari.`;
       formEl.append(h2El);
       const nameInputLabel = window.document.createElement("label");
-      nameInputLabel.innerText = "Name";
+      nameInputLabel.innerText = "Title*";
       nameInputLabel.append(nameInputEl);
       const fileInputLabel = window.document.createElement("label");
       fileInputLabel.innerText = "Icon";
       fileInputLabel.append(fileInputEl);
       const urlInputLabel = window.document.createElement("label");
-      urlInputLabel.innerText = "URL";
+      urlInputLabel.innerText = "URL*";
       urlInputLabel.append(urlInputEl);
       formEl.append(nameInputLabel);
       formEl.append(fileInputLabel);
       formEl.append(urlInputLabel);
       const buttonEl = window.document.createElement("button");
-      buttonEl.innerText = "Submit";
+      buttonEl.innerText = "Next";
       formEl.append(buttonEl);
+      const paragraphEl = window.document.createElement("p");
+      paragraphEl.textContent =
+        'On the next screen, hit the share icon, then select "Add to Home Screen" from the share sheet.';
+      formEl.append(paragraphEl);
       formEl.addEventListener("submit", (event) => {
         event.preventDefault();
         if (urlInputEl.value) {
@@ -99,69 +212,4 @@
       window.document.body.append(formEl);
     }
   </script>
-  <style>
-    :root {
-      color-scheme: dark;
-    }
-    body {
-      font-family: sans-serif;
-      display: flex;
-      place-items: center;
-      place-content: center;
-      height: 100dvh;
-      margin: 0;
-    }
-    a {
-      color: deepskyblue;
-    }
-    h1 {
-      font-size: 24px;
-    }
-    form {
-      box-sizing: border-box;
-      padding: 48px;
-      display: grid;
-      gap: 12px;
-      width: min(100% - 48px, 480px);
-      border: 1px solid;
-      border-radius: 48px;
-    }
-    input {
-      font-size: 22px;
-      border: 1px solid currentColor;
-    }
-    input {
-      width: 100%;
-      display: block;
-      padding: 8px;
-      border-radius: 8px;
-      box-sizing: border-box;
-    }
-    input[type="file"] {
-      align-items: center;
-      justify-content: center;
-      display: flex;
-    }
-    input[type="color"],
-    input[type="radio"] {
-      height: 48px;
-      width: 48px;
-    }
-    label {
-      display: grid;
-      width: 100%;
-    }
-    button {
-      font: unset;
-      font-size: 22px;
-      padding: 11px;
-      border: 1px solid white;
-      border-radius: 12px;
-      cursor: pointer;
-    }
-    button:not(:hover) {
-      color: unset;
-      background: blue;
-    }
-  </style>
 </body>
