@@ -195,7 +195,7 @@
             & svg {
               display: grid;
               place-self: center;
-              margin: 1rem auto;
+              margin: 1rem auto 0;
               max-width: 67px;
 
               & path {
@@ -212,22 +212,24 @@
             gap: 1rem;
 
             & p {
-              font-size: 1.125rem;
+              font-size: 1rem;
 
               @media (min-width: 600px) {
-                font-size: 1.25rem;
+                font-size: 1.125rem;
               }
             }
           }
 
           .share-sheet {
             margin-top: 1rem;
+            font-size: 0.9rem;
           }
 
           .share-sheet-item {
             border: 0.1rem solid CanvasText;
             padding: 1rem;
             text-align: left;
+            white-space: nowrap;
 
             &:not(.share-sheet-item--focus) {
               filter: blur(1px);
