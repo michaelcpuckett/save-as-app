@@ -94,16 +94,16 @@ class AppRoot extends HTMLElement {
           }
 
           const startUrl = `/?url=${urlInputElement.value}`;
+          const manifestData = {
+            name: titleInputElement.value || "",
+            short_name: titleInputElement.value || "",
+            start_url: startUrl,
+            display: "fullscreen",
+            background_color: "#000000",
+            theme_color: "#000000",
+          };
           const manifestDataUri = `data:application/manifest+json;charset=utf-8,${encodeURIComponent(
-            JSON.stringify({
-              name: titleInputElement.value || "",
-              short_name: titleInputElement.value || "",
-              start_url: startUrl,
-              scope: new URL(urlInputElement.value).origin,
-              display: "standalone",
-              background_color: "#000000",
-              theme_color: "#000000",
-            })
+            JSON.stringify(manifestData)
           )}`;
 
           const manifestLinkElement = window.document.createElement("link");
