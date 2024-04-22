@@ -1,5 +1,5 @@
 (function attachShadowRoots(root) {
-  root.querySelectorAll("template[shadowrootmode]").forEach(template => {
+  root.querySelectorAll("template[shadowrootmode]").forEach((template) => {
     const mode = template.getAttribute("shadowrootmode");
     const shadowRoot = template.parentNode.attachShadow({ mode });
     shadowRoot.appendChild(template.content);
@@ -12,12 +12,9 @@ class AppRoot extends HTMLElement {
   constructor() {
     super();
     const formElement = this.shadowRoot.querySelector("form");
-    const titleInputElement =
-      formElement.querySelector('input[type="text"]');
-    const fileInputElement =
-      formElement.querySelector('input[type="file"]');
-    const urlInputElement =
-      formElement.querySelector('input[type="url"]');
+    const titleInputElement = formElement.querySelector('input[type="text"]');
+    const fileInputElement = formElement.querySelector('input[type="file"]');
+    const urlInputElement = formElement.querySelector('input[type="url"]');
     const inputElements = [
       titleInputElement,
       fileInputElement,
@@ -81,12 +78,12 @@ class AppRoot extends HTMLElement {
           event.preventDefault();
 
           const invalidElements = inputElements.filter(
-            (InputElement) => !InputElement.validity.valid
+            (inputElement) => !inputElement.validity.valid
           );
 
           if (invalidElements.length) {
-            for (const InputElement of inputElements) {
-              InputElement.setAttribute("aria-invalid", "false");
+            for (const inputElement of inputElements) {
+              inputElement.setAttribute("aria-invalid", "false");
             }
 
             for (const invalidElement of invalidElements) {
@@ -102,14 +99,14 @@ class AppRoot extends HTMLElement {
               name: titleInputElement.value || "",
               short_name: titleInputElement.value || "",
               start_url: startUrl,
+              scope: new URL(urlInputElement.value).origin,
               display: "standalone",
               background_color: "#000000",
               theme_color: "#000000",
             })
           )}`;
 
-          const manifestLinkElement =
-            window.document.createElement("link");
+          const manifestLinkElement = window.document.createElement("link");
           manifestLinkElement.setAttribute("rel", "manifest");
           manifestLinkElement.setAttribute("href", manifestDataUri);
 
