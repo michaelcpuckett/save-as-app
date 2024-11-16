@@ -1,17 +1,7 @@
-(function attachShadowRoots(root) {
-  root.querySelectorAll("template[shadowrootmode]").forEach((template) => {
-    const mode = template.getAttribute("shadowrootmode");
-    const shadowRoot = template.parentNode.attachShadow({ mode });
-    shadowRoot.appendChild(template.content);
-    template.remove();
-    attachShadowRoots(shadowRoot);
-  });
-})(window.document);
-
 class AppRoot extends HTMLElement {
   constructor() {
     super();
-    const formElement = this.shadowRoot.querySelector("form");
+    const formElement = this.querySelector("form");
     const titleInputElement = formElement.querySelector('input[type="text"]');
     const fileInputElement = formElement.querySelector('input[type="file"]');
     const urlInputElement = formElement.querySelector('input[type="url"]');

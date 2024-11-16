@@ -12,323 +12,373 @@
   <meta name="mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <style>
+    * {
+      box-sizing: border-box;
+      text-wrap: balance;
+      text-wrap: pretty;
+    }
+
     :root {
       font-size: 24px;
+      display: grid;
     }
 
     body {
       margin: 0;
     }
+
+    app-root {
+      color-scheme: dark;
+      height: 100%;
+      font-size: 24px;
+      color: CanvasText;
+      font-family: sans-serif;
+      display: grid;
+      line-height: 1.4;
+      place-items: center;
+      place-content: center;
+      height: max-content;
+      min-height: 100%;
+      margin: 0;
+      background: #242426;
+    }
+
+    app-root:not(.is-showing-step) {
+      display: none;
+    }
+
+    app-root:is(.is-showing-step):not(.is-showing-step--configuration)
+      .step--configuration {
+      display: none;
+    }
+
+    app-root:is(.is-showing-step):not(.is-showing-step--add-to-homescreen)
+      .step--add-to-homescreen {
+      display: none;
+    }
+
+    main {
+      width: min(100% - 2rem, 20rem);
+      margin: 0 auto;
+      min-height: 100vh;
+      min-height: 100svh;
+      display: grid;
+      place-items: center;
+      place-content: center;
+      padding-bottom: 1rlh;
+    }
+
+    a {
+      color: deepskyblue;
+    }
+
+    h1 {
+      font-size: 1rem;
+      margin: 1rlh 0;
+      font-style: italic;
+    }
+
+    h2 {
+      margin: 0;
+      font-size: 1rem;
+    }
+
+    section {
+      font-size: 0.75em;
+      padding: 1rlh;
+      border: 1px solid;
+      border-radius: 1rlh;
+    }
+
+    aside {
+      padding-top: 1em;
+    }
+
+    h3 {
+      font-size: 1em;
+      margin: 0;
+      display: inline;
+
+      &:after {
+        content: ":";
+      }
+
+      & + p {
+        display: inline;
+      }
+    }
+
+    p {
+      margin-bottom: 0;
+    }
+
+    form {
+      position: relative;
+      box-sizing: border-box;
+      display: grid;
+      gap: 1rem;
+      width: 100%;
+      border: 0.1rem solid #4c4b4b;
+      border-radius: 2rem;
+      margin: 2rem auto;
+      overflow: hidden;
+      padding: 1rem;
+      padding-top: calc(1rem + 18px);
+
+      @media (min-width: 600px) {
+        padding: 2rem;
+        padding-top: calc(2rem + 18px);
+      }
+    }
+
+    form:before {
+      position: absolute;
+      content: "";
+      left: 0;
+      right: 0;
+      height: 18px;
+      background: #4c4b4b;
+    }
+
+    form:after {
+      position: absolute;
+      content: "";
+      left: 0;
+      right: 0;
+      top: 4px;
+      height: 8px;
+      background: url("handle-buttons.svg");
+      background-repeat: no-repeat;
+      background-position: center center;
+    }
+
+    input {
+      font-size: 0.75rem;
+      border: 0.1rem solid #4c4b4b;
+      width: 100%;
+      display: block;
+      padding: 0.5rem;
+      border-radius: 0.5rem;
+      box-sizing: border-box;
+    }
+
+    input[type="file"] {
+      align-items: center;
+      justify-content: center;
+      display: flex;
+    }
+
+    label {
+      font-size: 0.75rem;
+      font-weight: bold;
+      display: grid;
+      width: 100%;
+      gap: 0.25rem;
+    }
+
+    label:has([aria-invalid="true"]) {
+      color: red;
+
+      & input {
+        border-color: red;
+      }
+    }
+
+    button {
+      font: unset;
+      font-size: 1rem;
+      padding: 0.5rem;
+      border: 0.1rem solid #4c4b4b;
+      border-radius: 0.5rem;
+      cursor: pointer;
+      font-weight: bold;
+      color: Canvas;
+      background: deepskyblue;
+    }
+
+    .step--configuration {
+      & p {
+        font-size: 0.75rem;
+      }
+    }
+
+    .step--add-to-homescreen {
+      min-height: 100vh;
+      min-height: 100svh;
+      display: grid;
+      padding: 2rem;
+      text-align: center;
+      place-items: center;
+      place-content: center;
+
+      & svg {
+        display: grid;
+        place-self: center;
+        margin: 1rem auto 0;
+        max-width: 67px;
+
+        & path {
+          fill: deepskyblue;
+        }
+      }
+    }
+
+    ol {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      display: grid;
+      gap: 1rem;
+
+      & p {
+        font-size: 1rem;
+
+        @media (min-width: 600px) {
+          font-size: 1.125rem;
+        }
+      }
+    }
+
+    .share-sheet {
+      margin-top: 1rem;
+      font-size: 0.9rem;
+    }
+
+    .share-sheet-item {
+      border: 0.1rem solid CanvasText;
+      padding: 1rem;
+      text-align: left;
+      white-space: nowrap;
+
+      &:not(.share-sheet-item--focus) {
+        filter: blur(1px);
+        transform: scale(0.9);
+      }
+    }
+
+    .visually-hidden {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip: rect(0 0 0 0);
+      clip-path: inset(50%);
+      white-space: nowrap;
+    }
   </style>
   <body>
     <app-root>
-      <template shadowrootmode="open">
-        <style>
-          * {
-            box-sizing: border-box;
-            text-wrap: balance;
-            text-wrap: pretty;
-          }
-
-          :host {
-            color-scheme: dark;
-            height: 100%;
-            font-size: 24px;
-            color: CanvasText;
-            font-family: sans-serif;
-            display: grid;
-            line-height: 1.4;
-            place-items: center;
-            place-content: center;
-            height: max-content;
-            min-height: 100%;
-            margin: 0;
-            background: #242426;
-          }
-
-          :host(:not(.is-showing-step)) {
-            display: none;
-          }
-
-          :host(.is-showing-step:not(.is-showing-step--configuration))
-            .step--configuration {
-            display: none;
-          }
-
-          :host(.is-showing-step:not(.is-showing-step--add-to-homescreen))
-            .step--add-to-homescreen {
-            display: none;
-          }
-
-          main {
-            width: min(100% - 2rem, 20rem);
-            margin: 0 auto;
-            min-height: 100vh;
-            min-height: 100svh;
-            display: grid;
-            place-items: center;
-            place-content: center;
-          }
-
-          a {
-            color: deepskyblue;
-          }
-
-          h1 {
-            font-size: 1rem;
-          }
-
-          form {
-            position: relative;
-            box-sizing: border-box;
-            display: grid;
-            gap: 1rem;
-            width: 100%;
-            border: 0.1rem solid #4c4b4b;
-            border-radius: 2rem;
-            margin: 2rem auto;
-            overflow: hidden;
-            padding: 1rem;
-            padding-top: calc(1rem + 18px);
-
-            @media (min-width: 600px) {
-              padding: 2rem;
-              padding-top: calc(2rem + 18px);
-            }
-          }
-
-          form:before {
-            position: absolute;
-            content: "";
-            left: 0;
-            right: 0;
-            height: 18px;
-            background: #4c4b4b;
-          }
-
-          form:after {
-            position: absolute;
-            content: "";
-            left: 0;
-            right: 0;
-            top: 4px;
-            height: 8px;
-            background: url("handle-buttons.svg");
-            background-repeat: no-repeat;
-            background-position: center center;
-          }
-
-          h2 {
-            margin: 0;
-            font-size: 1rem;
-          }
-
-          input {
-            font-size: 0.75rem;
-            border: 0.1rem solid #4c4b4b;
-            width: 100%;
-            display: block;
-            padding: 0.5rem;
-            border-radius: 0.5rem;
-            box-sizing: border-box;
-          }
-
-          input[type="file"] {
-            align-items: center;
-            justify-content: center;
-            display: flex;
-          }
-
-          label {
-            font-size: 0.75rem;
-            font-weight: bold;
-            display: grid;
-            width: 100%;
-            gap: 0.25rem;
-          }
-
-          label:has([aria-invalid="true"]) {
-            color: red;
-
-            & input {
-              border-color: red;
-            }
-          }
-
-          button {
-            font: unset;
-            font-size: 1rem;
-            padding: 0.5rem;
-            border: 0.1rem solid #4c4b4b;
-            border-radius: 0.5rem;
-            cursor: pointer;
-            font-weight: bold;
-            color: Canvas;
-            background: deepskyblue;
-          }
-
-          footer {
-            width: min(100% - 2rem, 20rem);
-            margin-bottom: 2rem;
-          }
-
-          .step--configuration {
-            & p {
-              font-size: 0.75rem;
-            }
-          }
-
-          .step--add-to-homescreen {
-            min-height: 100vh;
-            min-height: 100svh;
-            display: grid;
-            padding: 2rem;
-            text-align: center;
-            place-items: center;
-            place-content: center;
-
-            & p {
-              max-width: 480px;
-              margin: 0 auto;
-            }
-
-            & svg {
-              display: grid;
-              place-self: center;
-              margin: 1rem auto 0;
-              max-width: 67px;
-
-              & path {
-                fill: deepskyblue;
-              }
-            }
-          }
-
-          ol {
-            margin: 0;
-            padding: 0;
-            list-style: none;
-            display: grid;
-            gap: 1rem;
-
-            & p {
-              font-size: 1rem;
-
-              @media (min-width: 600px) {
-                font-size: 1.125rem;
-              }
-            }
-          }
-
-          .share-sheet {
-            margin-top: 1rem;
-            font-size: 0.9rem;
-          }
-
-          .share-sheet-item {
-            border: 0.1rem solid CanvasText;
-            padding: 1rem;
-            text-align: left;
-            white-space: nowrap;
-
-            &:not(.share-sheet-item--focus) {
-              filter: blur(1px);
-              transform: scale(0.9);
-            }
-          }
-
-          .visually-hidden {
-            position: absolute;
-            width: 1px;
-            height: 1px;
-            overflow: hidden;
-            clip: rect(0 0 0 0);
-            clip-path: inset(50%);
-            white-space: nowrap;
-          }
-        </style>
-        <main>
-          <section class="step--configuration">
-            <form novalidate>
-              <h1>
-                <a href="https://save-as.app">save-as.app</a>
-              </h1>
-              <h2>
-                Open any website in a standalone window on iPhone or iPad,
-                instead of Safari.
-              </h2>
-              <label>
-                Title*
-                <input type="text" placeholder="My Web App" required />
-              </label>
-              <label>
-                Icon
-                <input type="file" />
-              </label>
-              <label>
-                URL*
-                <input type="url" value="https://" required />
-              </label>
-              <button type="submit">Next</button>
+      <main>
+        <div class="step--configuration">
+          <h1>save-as.app</h1>
+          <section aria-labelledby="heading--what">
+            <h2 id="heading--what">What is this?</h2>
+            <p>
+              This project is a way to generate a link to a website that opens
+              in a standalone window on iPhone or iPad, instead of Safari.
+            </p>
+            <aside aria-labelledby="heading--note">
+              <h3 id="heading--note">Note</h3>
               <p>
-                On the next screen, hit the share icon, then select "Add to Home
-                Screen" from the share sheet.
-              </p>
-            </form>
-          </section>
-          <section class="step--add-to-homescreen">
-            <h1 class="visually-hidden">Instructions</h1>
-            <ol>
-              <li>
-                <p>Now, press Safari's Share button.</p>
-                <svg
-                  aria-hidden="true"
-                  version="1.1"
-                  xmlns="http://www.w3.org/2000/svg"
-                  xmlns:xlink="http://www.w3.org/1999/xlink"
-                  x="0px"
-                  y="0px"
-                  viewBox="0 0 256 256"
-                  enable-background="new 0 0 256 256"
-                  xml:space="preserve"
+                If removing all UI is crucial, you may want to generate a
+                <a
+                  href="https://developer.apple.com/documentation/devicemanagement/webclip"
+                  >WebClip</a
                 >
-                  <path
-                    fill="#000000"
-                    d="M99.6,51.2l23.1-23.1v126.6c0,3.2,2.1,5.4,5.4,5.4s5.4-2.1,5.4-5.4V28.1l23.1,23.1c1.1,1.1,2.1,1.6,3.8,1.6s2.7-0.5,3.8-1.6c2.1-2.1,2.1-5.4,0-7.5l-32.2-32.2c-0.5-0.5-1.1-1.1-1.6-1.1c-1.1-0.5-2.7-0.5-4.3,0c-0.5,0.5-1.1,0.5-1.6,1.1L92.1,43.7c-2.1,2.1-2.1,5.4,0,7.5C94.2,53.4,97.4,53.4,99.6,51.2z M203.1,74.3h-42.9V85h42.9v150.2H52.9V85h42.9V74.3H52.9c-5.9,0-10.7,4.8-10.7,10.7v150.2c0,5.9,4.8,10.7,10.7,10.7h150.2c5.9,0,10.7-4.8,10.7-10.7V85C213.9,79.1,209,74.3,203.1,74.3z"
-                  />
-                </svg>
-              </li>
-              <li>
-                <p>Select "Add to Home Screen" from the share sheet menu.</p>
-                <div class="share-sheet" aria-hidden="true">
-                  <div class="share-sheet-item">Add Bookmark</div>
-                  <div class="share-sheet-item">Find on Page</div>
-                  <div class="share-sheet-item share-sheet-item--focus">
-                    Add to Home Screen
-                  </div>
-                  <div class="share-sheet-item">Print</div>
-                </div>
-              </li>
-            </ol>
+                instead:
+              </p>
+              <ul aria-label="Links to WebClip generators">
+                <li>
+                  <a href="https://olibu.github.io/wcg"
+                    >"Web Clipper" Online Generator</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="https://www.icloud.com/shortcuts/54b26547792d43d0825f5fda6d7b32ac"
+                  >
+                    "Make App from Web URL" for Shortcuts app
+                  </a>
+                </li>
+              </ul>
+            </aside>
+            <p>
+              The form on this page will generate a Homescreen Web App (not a
+              WebClip).
+            </p>
           </section>
-        </main>
-        <footer>
-          <h2>How does this work?</h2>
-          <p>
-            Web browsers look for a <code>manifest.json</code> file to determine
-            whether a website can be opened as a Progressive Web App. This
-            website generates a custom <code>manifest.json</code> file,
-            configured to launch as a standalone app that opens in a separate
-            window on iPhone and iPad.
-          </p>
-          <p>
-            This website is open source. You can view the source code on
-            <a href="https://www.github.com/michaelcpuckett/save-as-app"
-              >Github</a
-            >.
-          </p>
-        </footer>
-      </template>
+          <form novalidate>
+            <label>
+              Title*
+              <input type="text" placeholder="My Web App" required />
+            </label>
+            <label>
+              Icon
+              <input type="file" />
+            </label>
+            <label>
+              URL*
+              <input type="url" value="https://" required />
+            </label>
+            <button type="submit">Next</button>
+            <p>
+              On the next screen, hit the share icon, then select "Add to Home
+              Screen" from the share sheet.
+            </p>
+          </form>
+          <section aria-labelledby="heading--how">
+            <h2 id="heading--how">How does this work?</h2>
+            <p>
+              Web browsers look for a <code>manifest.json</code> file to
+              determine whether a website can be opened as a Progressive Web
+              App. This website generates a custom
+              <code>manifest.json</code> file, configured to launch as a
+              standalone app that opens in a separate window on iPhone and iPad.
+            </p>
+            <p>
+              This website is open source. You can view the source code on
+              <a href="https://www.github.com/michaelcpuckett/save-as-app"
+                >Github</a
+              >.
+            </p>
+          </section>
+        </div>
+        <div class="step--add-to-homescreen">
+          <h1 class="visually-hidden">Instructions</h1>
+          <ol>
+            <li>
+              <p>Now, press Safari's Share button.</p>
+              <svg
+                aria-hidden="true"
+                version="1.1"
+                xmlns="http://www.w3.org/2000/svg"
+                xmlns:xlink="http://www.w3.org/1999/xlink"
+                x="0px"
+                y="0px"
+                viewBox="0 0 256 256"
+                enable-background="new 0 0 256 256"
+                xml:space="preserve"
+              >
+                <path
+                  fill="#000000"
+                  d="M99.6,51.2l23.1-23.1v126.6c0,3.2,2.1,5.4,5.4,5.4s5.4-2.1,5.4-5.4V28.1l23.1,23.1c1.1,1.1,2.1,1.6,3.8,1.6s2.7-0.5,3.8-1.6c2.1-2.1,2.1-5.4,0-7.5l-32.2-32.2c-0.5-0.5-1.1-1.1-1.6-1.1c-1.1-0.5-2.7-0.5-4.3,0c-0.5,0.5-1.1,0.5-1.6,1.1L92.1,43.7c-2.1,2.1-2.1,5.4,0,7.5C94.2,53.4,97.4,53.4,99.6,51.2z M203.1,74.3h-42.9V85h42.9v150.2H52.9V85h42.9V74.3H52.9c-5.9,0-10.7,4.8-10.7,10.7v150.2c0,5.9,4.8,10.7,10.7,10.7h150.2c5.9,0,10.7-4.8,10.7-10.7V85C213.9,79.1,209,74.3,203.1,74.3z"
+                />
+              </svg>
+            </li>
+            <li>
+              <p>Select "Add to Home Screen" from the share sheet menu.</p>
+              <div class="share-sheet" aria-hidden="true">
+                <div class="share-sheet-item">Add Bookmark</div>
+                <div class="share-sheet-item">Find on Page</div>
+                <div class="share-sheet-item share-sheet-item--focus">
+                  Add to Home Screen
+                </div>
+                <div class="share-sheet-item">Print</div>
+              </div>
+            </li>
+          </ol>
+        </div>
+      </main>
     </app-root>
     <script type="module" src="behavior.js"></script>
   </body>
