@@ -40,7 +40,7 @@
       height: max-content;
       min-height: 100%;
       margin: 0;
-      background: #242426;
+      background: #202124;
     }
 
     app-root:not(.is-showing-step) {
@@ -65,7 +65,7 @@
       display: grid;
       place-items: center;
       place-content: center;
-      padding-bottom: 1rlh;
+      padding-bottom: 1rem;
     }
 
     a {
@@ -73,8 +73,8 @@
     }
 
     h1 {
-      font-size: 1rem;
-      margin: 1rlh 0;
+      font-size: 1.25rem;
+      margin: 1rem 0 0;
       font-style: italic;
     }
 
@@ -85,9 +85,9 @@
 
     section {
       font-size: 0.75em;
-      padding: 1rlh;
+      padding: 1rem;
       border: 1px solid;
-      border-radius: 1rlh;
+      border-radius: 1rem;
     }
 
     aside {
@@ -120,7 +120,7 @@
       width: 100%;
       border: 0.1rem solid #4c4b4b;
       border-radius: 2rem;
-      margin: 2rem auto;
+      margin: 0 auto;
       overflow: hidden;
       padding: 1rem;
       padding-top: calc(1rem + 18px);
@@ -197,6 +197,9 @@
     }
 
     .step--configuration {
+      display: grid;
+      gap: 1rem;
+
       & p {
         font-size: 0.75rem;
       }
@@ -271,6 +274,25 @@
       <main>
         <div class="step--configuration">
           <h1>save-as.app</h1>
+          <form novalidate>
+            <label>
+              Title*
+              <input type="text" placeholder="My Web App" required />
+            </label>
+            <label>
+              Icon
+              <input type="file" />
+            </label>
+            <label>
+              URL*
+              <input type="url" value="https://" required />
+            </label>
+            <button type="submit">Next</button>
+            <p>
+              On the next screen, hit the share icon, then select "Add to Home
+              Screen" from the share sheet.
+            </p>
+          </form>
           <section aria-labelledby="heading--what">
             <h2 id="heading--what">What is this?</h2>
             <p>
@@ -303,29 +325,10 @@
               </ul>
             </aside>
             <p>
-              The form on this page will generate a Homescreen Web App (not a
-              WebClip).
+              The form on this page will generate a Homescreen Web App &mdash;
+              not a WebClip.
             </p>
           </section>
-          <form novalidate>
-            <label>
-              Title*
-              <input type="text" placeholder="My Web App" required />
-            </label>
-            <label>
-              Icon
-              <input type="file" />
-            </label>
-            <label>
-              URL*
-              <input type="url" value="https://" required />
-            </label>
-            <button type="submit">Next</button>
-            <p>
-              On the next screen, hit the share icon, then select "Add to Home
-              Screen" from the share sheet.
-            </p>
-          </form>
           <section aria-labelledby="heading--how">
             <h2 id="heading--how">How does this work?</h2>
             <p>

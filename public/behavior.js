@@ -49,13 +49,14 @@ class AppRoot extends HTMLElement {
 
         const iconLinkElement = window.document.createElement("link");
         iconLinkElement.setAttribute("rel", "apple-touch-icon");
+        let iconDataUrl = "";
 
         fileInputElement.addEventListener("change", () => {
           const file = fileInputElement.files[0];
           const reader = new FileReader();
 
           reader.addEventListener("load", () => {
-            iconLinkElement.href = reader.result;
+            iconDataUrl = reader.result;
           });
 
           if (file) {
