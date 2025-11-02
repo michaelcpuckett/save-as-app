@@ -27,6 +27,19 @@
       margin: 0;
     }
 
+    .sticky-banner {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: deepskyblue;
+      color: black;
+      padding: 16px;
+      text-align: center;
+      font-size: 18px;
+      line-height: 1.5;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
     app-root {
       color-scheme: dark;
       height: 100%;
@@ -273,6 +286,10 @@
     <app-root>
       <main>
         <div class="step--configuration">
+          <div class="sticky-banner">
+            <strong>NEW!</strong> This feature is now built-in to iOS 26 and
+            later.
+          </div>
           <h1>save-as.app</h1>
           <form novalidate>
             <label>
